@@ -15,8 +15,6 @@ import {
   IonCol,
   IonImg,
 } from '@ionic/react';
-// Comment out `ExploreContainer` for this demo
-// import ExploreContainer from '../components/ExploreContainer';
 // Add `usePhotoGallery` import
 import { usePhotoGallery } from '../hooks/usePhotoGallery';
 import './Tab2.css';
