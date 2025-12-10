@@ -7,3 +7,10 @@ html {
   body {
     font-size: 1.2rem;
   }
+
+  /* Ensure cards have proper spacing for scrolling 
+ion-card {
+  max-width: 36rem;
+  padding: 0 1rem;
+  margin: 1rem auto;
+}*/
