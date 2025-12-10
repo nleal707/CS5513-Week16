@@ -34,18 +34,38 @@ interface Place {
   section_1_title: string;
   section_1_description: string;
   section_1_image: string;
+  section_1_url: string;
+  section_1_address: string;
+  section_1_cuisine: string;
+  section_1_vibe: string;
   section_2_title: string;
   section_2_description: string;
   section_2_image: string;
+  section_2_url: string;
+  section_2_address: string;
+  section_2_cuisine: string;
+  section_2_vibe: string;
   section_3_title: string;
   section_3_description: string;
   section_3_image: string;
+  section_3_url: string;
+  section_3_address: string;
+  section_3_cuisine: string;
+  section_3_vibe: string;
   section_4_title: string;
   section_4_description: string;
   section_4_image: string;
+  section_4_url: string;
+  section_4_address: string;
+  section_4_cuisine: string;
+  section_4_vibe: string;
   section_5_title: string;
   section_5_description: string;
   section_5_image: string;
+  section_5_url: string;
+  section_5_address: string;
+  section_5_cuisine: string;
+  section_5_vibe: string;
   secondary_image_title: string;
   secondary_image_description: string;
   secondary_image: string;
@@ -125,6 +145,33 @@ const PlaceDetail: React.FC = () => {
                 <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_1_description) }} />
                 </IonText>
+                {(place.section_1_cuisine || place.section_1_vibe) && (
+                  <div className="section-metadata">
+                    {place.section_1_cuisine && (
+                      <IonText className="metadata-item">
+                        <span className="metadata-label">Cuisine:</span> {decodeHTMLEntities(place.section_1_cuisine)}
+                      </IonText>
+                    )}
+                    {place.section_1_vibe && (
+                      <IonText className="metadata-item">
+                        <span className="metadata-label">Vibe:</span> {decodeHTMLEntities(place.section_1_vibe)}
+                      </IonText>
+                    )}
+                  </div>
+                )}
+                {place.section_1_url && place.section_1_address && (
+                  <div className="section-location">
+                    <span className="metadata-label">Location:</span>
+                    <a
+                      href={place.section_1_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="location-link"
+                    >
+                      {decodeHTMLEntities(place.section_1_address)}
+                    </a>
+                  </div>
+                )}
                 {place.section_1_image && (
                     <IonImg
                     className="section-image"
@@ -147,6 +194,33 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_2_description) }} />
               </IonText>
+              {(place.section_2_cuisine || place.section_2_vibe) && (
+                <div className="section-metadata">
+                  {place.section_2_cuisine && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Cuisine:</span> {decodeHTMLEntities(place.section_2_cuisine)}
+                    </IonText>
+                  )}
+                  {place.section_2_vibe && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Vibe:</span> {decodeHTMLEntities(place.section_2_vibe)}
+                    </IonText>
+                  )}
+                </div>
+              )}
+              {place.section_2_url && place.section_2_address && (
+                <div className="section-location">
+                  <span className="metadata-label">Location:</span>
+                  <a
+                    href={place.section_2_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="location-link"
+                  >
+                    {decodeHTMLEntities(place.section_2_address)}
+                  </a>
+                </div>
+              )}
               {place.section_2_image && (
                 <IonImg
                 className="section-image"
@@ -169,6 +243,33 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_3_description) }} />
               </IonText>
+              {(place.section_3_cuisine || place.section_3_vibe) && (
+                <div className="section-metadata">
+                  {place.section_3_cuisine && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Cuisine:</span> {decodeHTMLEntities(place.section_3_cuisine)}
+                    </IonText>
+                  )}
+                  {place.section_3_vibe && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Vibe:</span> {decodeHTMLEntities(place.section_3_vibe)}
+                    </IonText>
+                  )}
+                </div>
+              )}
+              {place.section_3_url && place.section_3_address && (
+                <div className="section-location">
+                  <span className="metadata-label">Location:</span>
+                  <a
+                    href={place.section_3_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="location-link"
+                  >
+                    {decodeHTMLEntities(place.section_3_address)}
+                  </a>
+                </div>
+              )}
               {place.section_3_image && (
                 <IonImg
                 className="section-image"
@@ -191,6 +292,33 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_4_description) }} />
               </IonText>
+              {(place.section_4_cuisine || place.section_4_vibe) && (
+                <div className="section-metadata">
+                  {place.section_4_cuisine && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Cuisine:</span> {decodeHTMLEntities(place.section_4_cuisine)}
+                    </IonText>
+                  )}
+                  {place.section_4_vibe && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Vibe:</span> {decodeHTMLEntities(place.section_4_vibe)}
+                    </IonText>
+                  )}
+                </div>
+              )}
+              {place.section_4_url && place.section_4_address && (
+                <div className="section-location">
+                  <span className="metadata-label">Location:</span>
+                  <a
+                    href={place.section_4_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="location-link"
+                  >
+                    {decodeHTMLEntities(place.section_4_address)}
+                  </a>
+                </div>
+              )}
               {place.section_4_image && (
                 <IonImg
                 className="section-image"
@@ -213,6 +341,33 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_5_description) }} />
               </IonText>
+              {(place.section_5_cuisine || place.section_5_vibe) && (
+                <div className="section-metadata">
+                  {place.section_5_cuisine && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Cuisine:</span> {decodeHTMLEntities(place.section_5_cuisine)}
+                    </IonText>
+                  )}
+                  {place.section_5_vibe && (
+                    <IonText className="metadata-item">
+                      <span className="metadata-label">Vibe:</span> {decodeHTMLEntities(place.section_5_vibe)}
+                    </IonText>
+                  )}
+                </div>
+              )}
+              {place.section_5_url && place.section_5_address && (
+                <div className="section-location">
+                  <span className="metadata-label">Location:</span>
+                  <a
+                    href={place.section_5_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="location-link"
+                  >
+                    {decodeHTMLEntities(place.section_5_address)}
+                  </a>
+                </div>
+              )}
               {place.section_5_image && (
                 <IonImg
                 className="section-image"

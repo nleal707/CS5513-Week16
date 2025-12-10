@@ -98,3 +98,44 @@ ion-card-content pre code {
   white-space: pre;
 }
 
+/* Section metadata styling (cuisine and vibe) */
+.section-metadata {
+  margin: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metadata-item {
+  display: block;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.metadata-label {
+  font-weight: 600;
+  color: var(--ion-color-dark, #222428);
+  margin-right: 0.5rem;
+}
+
+/* Location link styling */
+.section-location {
+  margin: 0.75rem 0;
+}
+
+.location-link {
+  color: var(--ion-color-primary, #3880ff);
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-block;
+  word-break: break-word;
+}
+
+.location-link:hover {
+  text-decoration: underline;
+}
+
+.location-link:active {
+  opacity: 0.7;
+}
+
