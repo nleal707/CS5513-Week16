@@ -156,3 +156,40 @@ export const removeHrefAttributes = (html: string): string => {
   return tmp.innerHTML;
 };
 
+/**
+ * Word count limit for preview descriptions
+ */
+export const PREVIEW_WORD_LIMIT = 40;
+
+/**
+ * Processes preview description HTML through the full pipeline:
+ * - Removes href attributes
+ * - Sanitizes HTML
+ * - Checks if truncation is needed (single check)
+ * - Truncates if necessary
+ * @param description - Raw HTML description string
+ * @param wordLimit - Maximum number of words to allow
+ * @returns Object containing processed HTML and truncation status
+ */
+export const processPreviewDescription = (
+  description: string,
+  wordLimit: number
+): { processedHTML: string; isTruncated: boolean } => {
+  const descriptionText = description || '';
+  // Remove href attributes first (prevents navigation conflicts)
+  const withoutHrefs = removeHrefAttributes(descriptionText);
+  // Then sanitize for security
+  const sanitized = sanitizeHTML(withoutHrefs);
+  // Check if truncation is needed (single check)
+  const needsTruncation = exceedsWordCount(sanitized, wordLimit);
+  // Truncate if needed
+  const processedHTML = needsTruncation
+    ? truncateHTMLToWords(sanitized, wordLimit) + '...'
+    : sanitized;
+  
+  return {
+    processedHTML,
+    isTruncated: needsTruncation
+  };
+};
+

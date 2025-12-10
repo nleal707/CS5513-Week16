@@ -13,7 +13,7 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { chevronForwardOutline } from 'ionicons/icons';
-import { sanitizeHTML, truncateHTMLToWords, exceedsWordCount, removeHrefAttributes, decodeHTMLEntities } from '../utils/htmlUtils';
+import { decodeHTMLEntities, processPreviewDescription, PREVIEW_WORD_LIMIT } from '../utils/htmlUtils';
 import './Tab1.css';
 
 interface Article {
@@ -36,7 +36,6 @@ interface Article {
   secondary_image: string;
   secondary_image_description: string;
 }
-
 
 const Tab1: React.FC = () => {
   const history = useHistory();
@@ -79,30 +78,28 @@ const Tab1: React.FC = () => {
             <IonItem lines="inset" key={index} button onClick={() => handleArticleClick(item)}>
               <IonLabel>
                 <h4>{decodeHTMLEntities(item.preview_title)}</h4>
-                <p style={{ display: 'inline-block' }}>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: (() => {
-                        const description = item.preview_description || '';
-                        // Remove href attributes first (prevents navigation conflicts)
-                        const withoutHrefs = removeHrefAttributes(description);
-                        // Then sanitize for security
-                        const sanitized = sanitizeHTML(withoutHrefs);
-                        // Finally truncate if needed
-                        const needsTruncation = exceedsWordCount(sanitized, 40);
-                        const truncated = needsTruncation 
-                          ? truncateHTMLToWords(sanitized, 40) + '...' 
-                          : sanitized;
-                        return truncated;
-                      })()
-                    }}
-                  />
-                  {exceedsWordCount(item.section_1_description || '', 40) && (
-                    <IonIcon 
-                      icon={chevronForwardOutline} 
-                      style={{ verticalAlign: 'middle', marginLeft: '4px', display: 'inline-block' }} 
-                    />
-                  )}
+                <p className="preview-description">
+                  {(() => {
+                    const { processedHTML, isTruncated } = processPreviewDescription(
+                      item.preview_description,
+                      PREVIEW_WORD_LIMIT
+                    );
+                    return (
+                      <>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: processedHTML
+                          }}
+                        />
+                        {isTruncated && (
+                          <IonIcon 
+                            icon={chevronForwardOutline} 
+                            className="preview-chevron"
+                          />
+                        )}
+                      </>
+                    );
+                  })()}
                 </p>
               </IonLabel>
             </IonItem>
