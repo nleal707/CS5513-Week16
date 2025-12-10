@@ -1,5 +1,5 @@
-// Import camera
-import { camera } from 'ionicons/icons';
+// Import camera and images icons
+import { camera, images } from 'ionicons/icons';
 // CHANGE: Update import
 import {
   IonContent,
@@ -14,15 +14,106 @@ import {
   IonRow,
   IonCol,
   IonImg,
+  IonToast,
+  IonSpinner,
+  IonText,
 } from '@ionic/react';
+import React, { useState } from 'react';
 // Add `usePhotoGallery` import
-import { usePhotoGallery } from '../hooks/usePhotoGallery';
+import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
+import PhotoDetailModal from '../components/PhotoDetailModal';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
-
   // Add `photos` array to destructure from `usePhotoGallery()`
-  const { photos, addNewToGallery } = usePhotoGallery();
+  const { photos, addNewToGallery, selectFromGallery, deletePhoto, sharePhoto } = usePhotoGallery();
+  
+  const [selectedPhoto, setSelectedPhoto] = useState<UserPhoto | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [toastColor, setToastColor] = useState<'success' | 'danger'>('success');
+  const [showToast, setShowToast] = useState(false);
+
+  const showError = (message: string) => {
+    setToastMessage(message);
+    setToastColor('danger');
+    setShowToast(true);
+  };
+
+  const showSuccess = (message: string) => {
+    setToastMessage(message);
+    setToastColor('success');
+    setShowToast(true);
+  };
+
+  const handlePhotoClick = (photo: UserPhoto) => {
+    setSelectedPhoto(photo);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPhoto(null);
+  };
+
+  const handleAddPhoto = async () => {
+    try {
+      setIsLoading(true);
+      await addNewToGallery();
+      showSuccess('Photo added successfully!');
+    } catch (error) {
+      console.error('Error adding photo:', error);
+      showError('Failed to add photo. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSelectFromGallery = async () => {
+    try {
+      setIsLoading(true);
+      await selectFromGallery();
+      showSuccess('Photo added from gallery!');
+    } catch (error) {
+      console.error('Error selecting from gallery:', error);
+      showError('Failed to select photo from gallery.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleShare = async (photo: UserPhoto) => {
+    try {
+      await sharePhoto(photo);
+      showSuccess('Photo shared successfully!');
+    } catch (error) {
+      console.error('Error sharing photo:', error);
+      showError('Failed to share photo.');
+      throw error;
+    }
+  };
+
+  const handleDelete = async (filepath: string) => {
+    try {
+      await deletePhoto(filepath);
+      showSuccess('Photo deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting photo:', error);
+      showError('Failed to delete photo.');
+      throw error;
+    }
+  };
+
+  const EmptyState: React.FC = () => (
+    <div className="empty-state">
+      <IonIcon icon={camera} className="empty-state-icon" />
+      <IonText>
+        <h2>No photos yet</h2>
+        <p>Tap the camera button to take your first photo!</p>
+      </IonText>
+    </div>
+  );
 
   return (
     <IonPage>
@@ -38,26 +129,59 @@ const Tab2: React.FC = () => {
           </IonToolbar>
         </IonHeader>
 
-        {/* Add a grid component to display the photos */}
-        <IonGrid>
-          <IonRow>
-            {/* Create a new column and image component for each photo */}
-            {photos.map((photo) => (
-              <IonCol size="6" key={photo.filepath}>
-                <IonImg src={photo.webviewPath} />
-              </IonCol>
-            ))}
-          </IonRow>
-        </IonGrid>
+        {isLoading && (
+          <div className="loading-overlay">
+            <IonSpinner name="crescent" />
+          </div>
+        )}
 
-        {/* Add the floating action button */}
+        {photos.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <IonGrid>
+            <IonRow>
+              {photos.map((photo) => (
+                <IonCol size="6" key={photo.filepath}>
+                  <div
+                    className="photo-thumbnail"
+                    onClick={() => handlePhotoClick(photo)}
+                  >
+                    <IonImg src={photo.webviewPath} />
+                  </div>
+                </IonCol>
+              ))}
+            </IonRow>
+          </IonGrid>
+        )}
+
+        {/* Floating action buttons */}
+        <IonFab vertical="bottom" horizontal="end" slot="fixed">
+          <IonFabButton onClick={handleSelectFromGallery} disabled={isLoading}>
+            <IonIcon icon={images}></IonIcon>
+          </IonFabButton>
+        </IonFab>
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
-          {/* Add a click event listener to the floating action button */}
-          <IonFabButton onClick={() => addNewToGallery()}>
+          <IonFabButton onClick={handleAddPhoto} disabled={isLoading}>
             <IonIcon icon={camera}></IonIcon>
           </IonFabButton>
         </IonFab>
 
+        <PhotoDetailModal
+          isOpen={isModalOpen}
+          photo={selectedPhoto}
+          onClose={handleCloseModal}
+          onShare={handleShare}
+          onDelete={handleDelete}
+        />
+
+        <IonToast
+          isOpen={showToast}
+          onDidDismiss={() => setShowToast(false)}
+          message={toastMessage}
+          duration={3000}
+          color={toastColor}
+          position="top"
+        />
       </IonContent>
     </IonPage>
   );

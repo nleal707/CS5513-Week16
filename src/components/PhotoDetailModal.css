@@ -1,0 +1,42 @@
+.photo-detail-content {
+  --background: #000;
+}
+
+.photo-detail-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 100%;
+}
+
+.photo-detail-image {
+  flex: 1;
+  width: 100%;
+  object-fit: contain;
+  min-height: 0;
+}
+
+.photo-detail-metadata {
+  padding: 1rem;
+  background: var(--ion-background-color);
+  border-top: 1px solid var(--ion-border-color);
+}
+
+.metadata-item {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.photo-detail-actions {
+  padding: 1rem;
+  background: var(--ion-background-color);
+  border-top: 1px solid var(--ion-border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.photo-detail-actions ion-button {
+  margin: 0;
+}
+
