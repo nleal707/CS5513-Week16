@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 // Update the following import. Change label ellipse to images.
-import { images, newspaper, newspaperOutline, square, triangle } from 'ionicons/icons';
+import { images, mapOutline, newspaper, newspaperOutline, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -82,8 +82,8 @@ const App: React.FC = () => (
             <IonLabel>Photos</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+            <IonIcon aria-hidden="true" icon={mapOutline} />
+            <IonLabel>Places</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

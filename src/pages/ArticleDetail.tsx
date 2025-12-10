@@ -80,7 +80,7 @@ const ArticleDetail: React.FC = () => {
               <IonIcon slot="icon-only" icon={arrowBack} />
             </IonButton>
           </IonButtons>
-          <IonTitle><p>Articles</p></IonTitle>
+          <IonTitle>Articles</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
