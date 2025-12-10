@@ -17,6 +17,10 @@ ion-img {
   display: block;
 }
 
+.section-image {
+  margin: 0.5rem 0;
+}
+
 /* Add padding to content for better scrolling experience */
 ion-content {
   --padding-bottom: 16px;

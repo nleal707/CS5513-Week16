@@ -21,20 +21,28 @@ interface Place {
   post_title: string;
   preview_title: string;
   preview_description: string;
-  featured_image: string;
+  preview_image: string;
+  featured_image_title: string;
   featured_image_description: string;
+  featured_image: string;
   section_1_title: string;
   section_1_description: string;
+  section_1_image: string;
   section_2_title: string;
   section_2_description: string;
+  section_2_image: string;
   section_3_title: string;
   section_3_description: string;
+  section_3_image: string;
   section_4_title: string;
   section_4_description: string;
+  section_4_image: string;
   section_5_title: string;
   section_5_description: string;
-  secondary_image: string;
+  section_5_image: string;
+  secondary_image_title: string;
   secondary_image_description: string;
+  secondary_image: string;
 }
 
 

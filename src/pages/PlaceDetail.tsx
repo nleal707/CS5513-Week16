@@ -100,7 +100,7 @@ const PlaceDetail: React.FC = () => {
 
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>{decodeHTMLEntities(place.preview_title)}</IonCardTitle>
+            <IonCardTitle>{decodeHTMLEntities(place.featured_image_title)}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             {place.featured_image && (
@@ -122,9 +122,18 @@ const PlaceDetail: React.FC = () => {
               <IonCardTitle>{decodeHTMLEntities(place.section_1_title)}</IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <IonText>
+                <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_1_description) }} />
-              </IonText>
+                </IonText>
+                {place.section_1_image && (
+                    <IonImg
+                    className="section-image"
+                    src={place.section_1_image}
+                    alt={decodeHTMLEntities(
+                        place.section_1_title || place.section_1_description || 'Section image'
+                    )}
+                    />
+                )}
             </IonCardContent>
           </IonCard>
         )}
@@ -138,6 +147,15 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_2_description) }} />
               </IonText>
+              {place.section_2_image && (
+                <IonImg
+                className="section-image"
+                src={place.section_2_image}
+                alt={decodeHTMLEntities(
+                    place.section_2_title || place.section_2_description || 'Section image'
+                )}
+                />
+              )}
             </IonCardContent>
           </IonCard>
         )}
@@ -151,6 +169,15 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_3_description) }} />
               </IonText>
+              {place.section_3_image && (
+                <IonImg
+                className="section-image"
+                src={place.section_3_image}
+                alt={decodeHTMLEntities(
+                    place.section_3_title || place.section_3_description || 'Section image'
+                )}
+                />
+              )}
             </IonCardContent>
           </IonCard>
         )}
@@ -164,6 +191,15 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_4_description) }} />
               </IonText>
+              {place.section_4_image && (
+                <IonImg
+                className="section-image"
+                src={place.section_4_image}
+                alt={decodeHTMLEntities(
+                    place.section_4_title || place.section_4_description || 'Section image'
+                )}
+                />
+              )}
             </IonCardContent>
           </IonCard>
         )}
@@ -177,18 +213,36 @@ const PlaceDetail: React.FC = () => {
               <IonText>
                 <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.section_5_description) }} />
               </IonText>
+              {place.section_5_image && (
+                <IonImg
+                className="section-image"
+                src={place.section_5_image}
+                alt={decodeHTMLEntities(
+                    place.section_5_title || place.section_5_description || 'Section image'
+                )}
+                />
+              )}
             </IonCardContent>
           </IonCard>
         )}
 
         {place.secondary_image && (
           <IonCard>
+            <IonCardHeader>
+              <IonCardTitle>{decodeHTMLEntities(place.secondary_image_title)}</IonCardTitle>
+            </IonCardHeader>
             <IonCardContent>
-              <IonImg src={place.secondary_image} alt={place.secondary_image_description || 'Secondary image'} />
-              {place.secondary_image_description && (
-                <IonText>
-                  <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.secondary_image_description) }} />
-                </IonText>
+              <IonText>
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHTML(place.secondary_image_description) }} />
+              </IonText>
+              {place.secondary_image && (
+                <IonImg
+                className="section-image"
+                src={place.secondary_image}
+                alt={decodeHTMLEntities(
+                    place.secondary_image_title || place.secondary_image_description || 'Secondary image'
+                )}
+                />
               )}
             </IonCardContent>
           </IonCard>
