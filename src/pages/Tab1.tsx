@@ -1,3 +1,12 @@
+/**
+ * Articles Listing Page (Tab1)
+ * 
+ * This page displays a list of articles fetched from a WordPress REST API endpoint.
+ * Each article is displayed as a card with a featured image, title, and truncated
+ * preview description. Users can click on an article card to navigate to the
+ * detailed article view.
+ */
+
 import { 
   IonContent, 
   IonHeader, 
@@ -19,6 +28,15 @@ import { chevronForwardOutline } from 'ionicons/icons';
 import { decodeHTMLEntities, processPreviewDescription, PREVIEW_WORD_LIMIT } from '../utils/htmlUtils';
 import './Tab1.css';
 
+/**
+ * Article Data Interface
+ * 
+ * Represents the structure of article data returned from the WordPress REST API.
+ * Articles contain multiple sections (up to 5) with titles and descriptions,
+ * along with featured and secondary images.
+ * 
+ * @interface Article
+ */
 interface Article {
   ID: number;
   post_title: string;
@@ -40,24 +58,52 @@ interface Article {
   secondary_image_description: string;
 }
 
+/**
+ * Tab1 Component - Articles Listing Page
+ * 
+ * Displays a scrollable list of articles fetched from a WordPress REST API.
+ * Each article is rendered as an interactive card that navigates to the detail
+ * view when clicked. Preview descriptions are truncated to a word limit and
+ * sanitized for safe HTML rendering.
+ * 
+ * @component
+ * @returns {JSX.Element} The articles listing page with card-based layout
+ */
 const Tab1: React.FC = () => {
   const history = useHistory();
 
-  // dataset state variable to hold JSON data from WP REST API
+  /**
+   * State for storing articles fetched from the WordPress REST API
+   */
   const [dataset, setDataset] = useState<Article[]>([]);
 
-  // URL for WP REST API endpoint
+  /**
+   * WordPress REST API endpoint URL for fetching articles
+   * Uses a custom endpoint that returns article data in a structured format
+   */
   const dataURL = 'https://dev-nleal-cs5513.pantheonsite.io/wp-json/twentytwentyfive-child/v1/articles';
  //  const dataURL = 'http://localhost:8000/wp-json/wp/v2/articles';
 
-  // useEffect to fetch data from WP REST API
+  /**
+   * Fetches articles from the WordPress REST API on component mount
+   * 
+   * The effect runs once when the component mounts and retrieves all available
+   * articles from the API endpoint, storing them in the dataset state.
+   */
   useEffect(() => {
     fetch(dataURL)
       .then(response => response.json())
       .then(data => setDataset(data));
   }, []);
 
-  // Handler to navigate to article detail page
+  /**
+   * Handles article card click events
+   * 
+   * Navigates to the article detail page, passing the selected article data
+   * via React Router's location state.
+   * 
+   * @param {Article} article - The article object that was clicked
+   */
   const handleArticleClick = (article: Article) => {
     history.push('/article', { article });
   };

@@ -1,3 +1,12 @@
+/**
+ * Article Detail Page
+ * 
+ * This page displays the full content of a selected article, including the featured
+ * image, all article sections (up to 5), and a secondary image. The article data
+ * is passed via React Router's location state from the Articles listing page.
+ * All HTML content is sanitized before rendering to prevent XSS attacks.
+ */
+
 import {
   IonContent,
   IonHeader,
@@ -22,6 +31,15 @@ import { arrowBack } from 'ionicons/icons';
 import { sanitizeHTML, decodeHTMLEntities } from '../utils/htmlUtils';
 import './ArticleDetail.css';
 
+/**
+ * Article Data Interface
+ * 
+ * Represents the structure of article data passed from the Articles listing page.
+ * Articles contain multiple sections (up to 5) with titles and descriptions,
+ * along with featured and secondary images.
+ * 
+ * @interface Article
+ */
 interface Article {
   ID: number;
   post_title: string;
@@ -43,30 +61,69 @@ interface Article {
   secondary_image_description: string;
 }
 
+/**
+ * Location State Interface
+ * 
+ * Defines the structure of data passed via React Router's location state.
+ * Used to pass article data from the listing page to the detail page.
+ * 
+ * @interface LocationState
+ */
 interface LocationState {
   article?: Article;
 }
 
+/**
+ * ArticleDetail Component
+ * 
+ * Displays the full content of a selected article in a scrollable card-based layout.
+ * The component receives article data via React Router's location state. If no article
+ * data is available, it redirects back to the Articles listing page. All HTML content
+ * is sanitized using DOMPurify before rendering to ensure security.
+ * 
+ * Features:
+ * - Featured image with description
+ * - Up to 5 article sections with titles and descriptions
+ * - Secondary image with description
+ * - Back navigation to Articles list
+ * - Skip link for accessibility
+ * 
+ * @component
+ * @returns {JSX.Element | null} The article detail page or null if redirecting
+ */
 const ArticleDetail: React.FC = () => {
   const location = useLocation<LocationState>();
   const history = useHistory();
   const article = location.state?.article;
 
-  // If no article data, redirect back to articles list
-  // Only redirect if we're on the article route without data (not when navigating to other tabs)
+  /**
+   * Redirects to Articles list if article data is missing
+   * 
+   * Only redirects if we're on the article route without data (not when navigating
+   * to other tabs). This prevents unnecessary redirects during normal tab navigation.
+   */
   useEffect(() => {
     if (!article && location.pathname === '/article') {
       history.replace('/tab1');
     }
   }, [article, location.pathname, history]);
 
-  // Handler for back button navigation - ensures reliable navigation to Tab1
+  /**
+   * Handles back button click navigation
+   * 
+   * Uses replace instead of push to maintain tab context and prevent history
+   * stack issues. This ensures the user returns to the Articles tab without
+   * creating additional history entries.
+   */
   const handleBackClick = () => {
     // Use replace to maintain tab context and prevent history stack issues
     history.replace('/tab1');
   };
 
-  // If no article data, show nothing while redirecting
+  /**
+   * Returns null while redirecting if no article data is available
+   * This prevents rendering incomplete content during the redirect process
+   */
   if (!article) {
     return null;
   }

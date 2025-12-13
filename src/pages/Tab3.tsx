@@ -1,3 +1,13 @@
+/**
+ * Places Listing Page (Tab3)
+ * 
+ * This page displays a list of places fetched from a WordPress REST API endpoint.
+ * Each place is displayed as a card with a preview image, title, location indicator,
+ * and truncated preview description. Users can click on a place card to navigate to
+ * the detailed place view which includes additional metadata like cuisine type, vibe,
+ * and location information.
+ */
+
 import { 
   IonContent, 
   IonHeader, 
@@ -20,6 +30,16 @@ import { chevronForwardOutline, locationOutline } from 'ionicons/icons';
 import { decodeHTMLEntities, processPreviewDescription, PREVIEW_WORD_LIMIT } from '../utils/htmlUtils';
 import './Tab3.css';
 
+/**
+ * Place Data Interface
+ * 
+ * Represents the structure of place data returned from the WordPress REST API.
+ * Places contain multiple sections (up to 5) with titles, descriptions, images,
+ * addresses, cuisine types, and vibe information. Each section can have associated
+ * metadata for location-based content.
+ * 
+ * @interface Place
+ */
 interface Place {
   ID: number;
   post_title: string;
@@ -72,25 +92,54 @@ interface Place {
   secondary_image_url: string;
 }
 
-
+/**
+ * Tab3 Component - Places Listing Page
+ * 
+ * Displays a scrollable list of places fetched from a WordPress REST API.
+ * Each place is rendered as an interactive card that navigates to the detail
+ * view when clicked. Preview descriptions are truncated to a word limit and
+ * sanitized for safe HTML rendering. Places include location indicators to
+ * distinguish them from articles.
+ * 
+ * @component
+ * @returns {JSX.Element} The places listing page with card-based layout
+ */
 const Tab3: React.FC = () => {
   const history = useHistory();
 
-  // dataset state variable to hold JSON data from WP REST API
+  /**
+   * State for storing places fetched from the WordPress REST API
+   */
   const [dataset, setDataset] = useState<Place[]>([]);
 
-  // URL for WP REST API endpoint
+  /**
+   * WordPress REST API endpoint URL for fetching places
+   * Uses a custom endpoint that returns place data in a structured format
+   * with location, cuisine, and vibe metadata
+   */
   const dataURL = 'https://dev-nleal-cs5513.pantheonsite.io/wp-json/twentytwentyfive-child/v1/places';
  //  const dataURL = 'http://localhost:8000/wp-json/wp/v2/articles';
 
-  // useEffect to fetch data from WP REST API
+  /**
+   * Fetches places from the WordPress REST API on component mount
+   * 
+   * The effect runs once when the component mounts and retrieves all available
+   * places from the API endpoint, storing them in the dataset state.
+   */
   useEffect(() => {
     fetch(dataURL)
       .then(response => response.json())
       .then(data => setDataset(data));
   }, []);
 
-  // Handler to navigate to place detail page
+  /**
+   * Handles place card click events
+   * 
+   * Navigates to the place detail page, passing the selected place data
+   * via React Router's location state.
+   * 
+   * @param {Place} place - The place object that was clicked
+   */
   const handlePlaceClick = (place: Place) => {
     history.push('/place', { place });
   };

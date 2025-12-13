@@ -1,3 +1,12 @@
+/**
+ * Main Application Component
+ * 
+ * This is the root component of the photo gallery application. It sets up the Ionic
+ * framework, configures routing with React Router, and defines the tab-based navigation
+ * structure. The app consists of three main tabs: Articles, Photos, and Places, with
+ * additional detail pages for viewing individual articles and places.
+ */
+
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -54,32 +63,64 @@ import './theme/accessibility.css';
 /* App styles */
 import './App.css';
 
+/**
+ * Initialize Ionic React
+ * 
+ * Sets up Ionic React components and configuration. This must be called before
+ * using any Ionic components in the application.
+ */
 setupIonicReact();
 
+/**
+ * App Component
+ * 
+ * The root component that provides the application structure with:
+ * - Tab-based navigation (Articles, Photos, Places)
+ * - Route definitions for all pages
+ * - Bottom tab bar for primary navigation
+ * 
+ * Routing Structure:
+ * - /tab1 - Articles listing page
+ * - /tab2 - Photo gallery page
+ * - /tab3 - Places listing page
+ * - /article - Article detail view (accessed via navigation from Tab1)
+ * - /place - Place detail view (accessed via navigation from Tab3)
+ * - / - Redirects to /tab1 (default route)
+ * 
+ * @component
+ * @returns {JSX.Element} The root application component with routing and tab navigation
+ */
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
+          {/* Articles tab - displays list of articles from WordPress API */}
           <Route exact path="/tab1">
             <Tab1 />
           </Route>
+          {/* Photos tab - displays user's photo gallery with camera functionality */}
           <Route exact path="/tab2">
             <Tab2 />
           </Route>
+          {/* Places tab - displays list of places from WordPress API */}
           <Route path="/tab3">
             <Tab3 />
           </Route>
+          {/* Article detail page - shows full article content */}
           <Route exact path="/article">
             <ArticleDetail />
           </Route>
+          {/* Place detail page - shows full place information with metadata */}
           <Route exact path="/place">
             <PlaceDetail />
           </Route>
+          {/* Default route - redirects to Articles tab */}
           <Route exact path="/">
             <Redirect to="/tab1" />
           </Route>
         </IonRouterOutlet>
+        {/* Bottom tab bar navigation */}
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1" aria-label="Articles tab">
             <IonIcon aria-hidden="true" icon={newspaper} />

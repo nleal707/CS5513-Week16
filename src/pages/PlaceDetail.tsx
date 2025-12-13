@@ -1,3 +1,13 @@
+/**
+ * Place Detail Page
+ * 
+ * This page displays the full content of a selected place, including the featured
+ * image, all place sections (up to 5) with associated metadata (cuisine type, vibe,
+ * location address and URL), and a secondary image. The place data is passed via
+ * React Router's location state from the Places listing page. All HTML content is
+ * sanitized before rendering to prevent XSS attacks.
+ */
+
 import {
   IonContent,
   IonHeader,
@@ -22,6 +32,16 @@ import { arrowBack } from 'ionicons/icons';
 import { sanitizeHTML, decodeHTMLEntities } from '../utils/htmlUtils';
 import './PlaceDetail.css';
 
+/**
+ * Place Data Interface
+ * 
+ * Represents the structure of place data passed from the Places listing page.
+ * Places contain multiple sections (up to 5) with titles, descriptions, images,
+ * addresses, cuisine types, vibe information, and location URLs. Each section
+ * can have associated metadata for location-based content.
+ * 
+ * @interface Place
+ */
 interface Place {
   ID: number;
   post_title: string;
@@ -71,30 +91,76 @@ interface Place {
   secondary_image: string;
 }
 
+/**
+ * Location State Interface
+ * 
+ * Defines the structure of data passed via React Router's location state.
+ * Used to pass place data from the listing page to the detail page.
+ * 
+ * @interface LocationState
+ */
 interface LocationState {
   place?: Place;
 }
 
+/**
+ * PlaceDetail Component
+ * 
+ * Displays the full content of a selected place in a scrollable card-based layout.
+ * The component receives place data via React Router's location state. If no place
+ * data is available, it redirects back to the Places listing page. All HTML content
+ * is sanitized using DOMPurify before rendering to ensure security.
+ * 
+ * Features:
+ * - Featured image with title and description
+ * - Up to 5 place sections with titles, descriptions, and images
+ * - Section metadata: cuisine type, vibe, and location (with clickable address link)
+ * - Secondary image with title and description
+ * - Back navigation to Places list
+ * - Skip link for accessibility
+ * 
+ * Each section can optionally include:
+ * - Cuisine type (e.g., "Italian", "Mexican")
+ * - Vibe description (e.g., "Casual", "Upscale")
+ * - Location address with external link to maps/directions
+ * - Section-specific image
+ * 
+ * @component
+ * @returns {JSX.Element | null} The place detail page or null if redirecting
+ */
 const PlaceDetail: React.FC = () => {
   const location = useLocation<LocationState>();
   const history = useHistory();
   const place = location.state?.place;
 
-  // If no place data, redirect back to places list
-  // Only redirect if we're on the place route without data (not when navigating to other tabs)
+  /**
+   * Redirects to Places list if place data is missing
+   * 
+   * Only redirects if we're on the place route without data (not when navigating
+   * to other tabs). This prevents unnecessary redirects during normal tab navigation.
+   */
   useEffect(() => {
     if (!place && location.pathname === '/place') {
       history.replace('/tab3');
     }
   }, [place, location.pathname, history]);
 
-  // Handler for back button navigation - ensures reliable navigation to Tab3
+  /**
+   * Handles back button click navigation
+   * 
+   * Uses replace instead of push to maintain tab context and prevent history
+   * stack issues. This ensures the user returns to the Places tab without
+   * creating additional history entries.
+   */
   const handleBackClick = () => {
     // Use replace to maintain tab context and prevent history stack issues
     history.replace('/tab3');
   };
 
-  // If no place data, show nothing while redirecting
+  /**
+   * Returns null while redirecting if no place data is available
+   * This prevents rendering incomplete content during the redirect process
+   */
   if (!place) {
     return null;
   }

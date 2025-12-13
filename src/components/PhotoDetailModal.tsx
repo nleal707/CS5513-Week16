@@ -1,3 +1,12 @@
+/**
+ * Photo Detail Modal Component
+ * 
+ * A modal component that displays detailed information about a selected photo,
+ * including the full-size image, metadata (date taken and file size), and action
+ * buttons for sharing and deleting. The modal includes a confirmation alert before
+ * deleting to prevent accidental data loss.
+ */
+
 import React from 'react';
 import {
   IonModal,
@@ -16,6 +25,18 @@ import { close, shareOutline, trashOutline } from 'ionicons/icons';
 import { UserPhoto } from '../hooks/usePhotoGallery';
 import './PhotoDetailModal.css';
 
+/**
+ * Photo Detail Modal Props Interface
+ * 
+ * Defines the props required by the PhotoDetailModal component.
+ * 
+ * @interface PhotoDetailModalProps
+ * @property {boolean} isOpen - Controls the visibility of the modal
+ * @property {UserPhoto | null} photo - The photo object to display, or null if no photo is selected
+ * @property {() => void} onClose - Callback function called when the modal should be closed
+ * @property {(photo: UserPhoto) => Promise<void>} onShare - Async callback function to share the photo
+ * @property {(filepath: string) => Promise<void>} onDelete - Async callback function to delete the photo
+ */
 interface PhotoDetailModalProps {
   isOpen: boolean;
   photo: UserPhoto | null;
@@ -24,6 +45,22 @@ interface PhotoDetailModalProps {
   onDelete: (filepath: string) => Promise<void>;
 }
 
+/**
+ * PhotoDetailModal Component
+ * 
+ * Displays a modal with photo details and action buttons. The modal shows:
+ * - Full-size photo image
+ * - Photo metadata (date taken, file size)
+ * - Share button (with loading state)
+ * - Delete button (with confirmation alert)
+ * 
+ * The component manages its own internal state for delete confirmation and
+ * loading states, while delegating actual share/delete operations to parent callbacks.
+ * 
+ * @component
+ * @param {PhotoDetailModalProps} props - Component props
+ * @returns {JSX.Element | null} The photo detail modal or null if no photo is provided
+ */
 const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
   isOpen,
   photo,
@@ -31,10 +68,19 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
   onShare,
   onDelete,
 }) => {
+  /** Controls visibility of the delete confirmation alert */
   const [showDeleteAlert, setShowDeleteAlert] = React.useState(false);
+  /** Loading state for delete operation */
   const [isDeleting, setIsDeleting] = React.useState(false);
+  /** Loading state for share operation */
   const [isSharing, setIsSharing] = React.useState(false);
 
+  /**
+   * Handles the share photo action
+   * 
+   * Calls the onShare callback with the current photo and manages the sharing
+   * loading state. Errors are logged but not displayed to the user (handled by parent).
+   */
   const handleShare = async () => {
     if (!photo) return;
     try {
@@ -47,6 +93,13 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
     }
   };
 
+  /**
+   * Handles the confirmed delete action
+   * 
+   * Called after user confirms deletion in the alert dialog. Calls the onDelete
+   * callback with the photo's filepath, closes the alert, and then closes the modal.
+   * Errors are logged but not displayed to the user (handled by parent).
+   */
   const handleDeleteConfirm = async () => {
     if (!photo) return;
     try {
@@ -61,6 +114,15 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
     }
   };
 
+  /**
+   * Formats a timestamp into a human-readable date string
+   * 
+   * Converts a Unix timestamp (milliseconds) into a formatted date string
+   * with full month name, day, year, and time.
+   * 
+   * @param {number | undefined} timestamp - Unix timestamp in milliseconds
+   * @returns {string} Formatted date string or "Unknown date" if timestamp is missing
+   */
   const formatDate = (timestamp?: number): string => {
     if (!timestamp) return 'Unknown date';
     const date = new Date(timestamp);
@@ -73,6 +135,14 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
     });
   };
 
+  /**
+   * Formats file size in bytes into a human-readable string
+   * 
+   * Converts bytes to the most appropriate unit (B, KB, or MB) with one decimal place.
+   * 
+   * @param {number | undefined} bytes - File size in bytes
+   * @returns {string} Formatted size string (e.g., "1.5 MB") or "Unknown size" if bytes is missing
+   */
   const formatSize = (bytes?: number): string => {
     if (!bytes) return 'Unknown size';
     if (bytes < 1024) return `${bytes} B`;
