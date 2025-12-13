@@ -43,6 +43,7 @@ import './Tab3.css';
 interface Place {
   ID: number;
   post_title: string;
+  physical_address: string;
   preview_title: string;
   preview_description: string;
   preview_image: string;
@@ -179,7 +180,7 @@ const Tab3: React.FC = () => {
                 <IonCardTitle>{decodeHTMLEntities(item.preview_title)}</IonCardTitle>
                 <div className="place-location-indicator" aria-label="Location">
                   <IonIcon icon={locationOutline} className="location-icon" aria-hidden="true" />
-                  <IonText className="location-text">Place</IonText>
+                  <IonText className="location-text">{decodeHTMLEntities(item.physical_address)}</IonText>
                 </div>
               </IonCardHeader>
               <IonCardContent>
