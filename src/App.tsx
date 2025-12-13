@@ -47,6 +47,12 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+/* Animations */
+import './theme/animations.css';
+/* Accessibility styles */
+import './theme/accessibility.css';
+/* App styles */
+import './App.css';
 
 setupIonicReact();
 
@@ -75,17 +81,17 @@ const App: React.FC = () => (
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
+          <IonTabButton tab="tab1" href="/tab1" aria-label="Articles tab">
             <IonIcon aria-hidden="true" icon={newspaper} />
             <IonLabel>Articles</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
+          <IonTabButton tab="tab2" href="/tab2" aria-label="Photos tab">
              {/* Update icon ellipse to images */}
             <IonIcon aria-hidden="true" icon={images} />
             {/* Update Tab2 label to Photos */}
             <IonLabel>Photos</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          <IonTabButton tab="tab3" href="/tab3" aria-label="Places tab">
             <IonIcon aria-hidden="true" icon={mapOutline} />
             <IonLabel>Places</IonLabel>
           </IonTabButton>

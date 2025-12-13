@@ -4,15 +4,19 @@ import {
   IonPage, 
   IonTitle, 
   IonToolbar, 
-  IonList, 
-  IonListHeader, 
-  IonItem, 
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonImg,
   IonLabel,
-  IonIcon
+  IonIcon,
+  IonText,
+  IonBadge
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { chevronForwardOutline } from 'ionicons/icons';
+import { chevronForwardOutline, locationOutline } from 'ionicons/icons';
 import { decodeHTMLEntities, processPreviewDescription, PREVIEW_WORD_LIMIT } from '../utils/htmlUtils';
 import './Tab3.css';
 
@@ -105,38 +109,61 @@ const Tab3: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {/* use map() to loop through JSON array returned from WP REST API */}
-        <IonList id="place-list">
+        <div className="places-container animate-stagger">
           {dataset.map((item, index) => (
-            <IonItem lines="inset" key={index} button onClick={() => handlePlaceClick(item)}>
-              <IonLabel>
-                <h4>{decodeHTMLEntities(item.preview_title)}</h4>
-                <p className="preview-description">
-                  {(() => {
-                    const { processedHTML, isTruncated } = processPreviewDescription(
-                      item.preview_description,
-                      PREVIEW_WORD_LIMIT
-                    );
-                    return (
-                      <>
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: processedHTML
-                          }}
-                        />
-                        {isTruncated && (
-                          <IonIcon 
-                            icon={chevronForwardOutline} 
-                            className="preview-chevron"
+            <IonCard 
+              key={index} 
+              className="place-card"
+              button 
+              onClick={() => handlePlaceClick(item)}
+              role="article"
+              aria-label={`Place: ${decodeHTMLEntities(item.preview_title)}`}
+            >
+              {item.preview_image && (
+                <IonImg 
+                  src={item.preview_image} 
+                  alt={decodeHTMLEntities(item.preview_title)}
+                  className="place-card-image"
+                />
+              )}
+              <IonCardHeader>
+                <IonCardTitle>{decodeHTMLEntities(item.preview_title)}</IonCardTitle>
+                <div className="place-location-indicator" aria-label="Location">
+                  <IonIcon icon={locationOutline} className="location-icon" aria-hidden="true" />
+                  <IonText className="location-text">Place</IonText>
+                </div>
+              </IonCardHeader>
+              <IonCardContent>
+                <IonText>
+                  <p className="preview-description">
+                    {(() => {
+                      const { processedHTML, isTruncated } = processPreviewDescription(
+                        item.preview_description,
+                        PREVIEW_WORD_LIMIT
+                      );
+                      return (
+                        <>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: processedHTML
+                            }}
                           />
-                        )}
-                      </>
-                    );
-                  })()}
-                </p>
-              </IonLabel>
-            </IonItem>
+                          {isTruncated && (
+                            <IonIcon 
+                              icon={chevronForwardOutline} 
+                              className="preview-chevron"
+                              aria-hidden="true"
+                            />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </p>
+                </IonText>
+              </IonCardContent>
+            </IonCard>
           ))}
-        </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );

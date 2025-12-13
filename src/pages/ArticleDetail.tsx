@@ -76,20 +76,22 @@ const ArticleDetail: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={handleBackClick}>
-              <IonIcon slot="icon-only" icon={arrowBack} />
+            <IonButton onClick={handleBackClick} aria-label="Go back to articles list">
+              <IonIcon slot="icon-only" icon={arrowBack} aria-hidden="true" />
             </IonButton>
           </IonButtons>
           <IonTitle>Articles</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <a href="#article-content" className="skip-link">Skip to article content</a>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{decodeHTMLEntities(article.post_title)}</IonTitle>
           </IonToolbar>
         </IonHeader>
 
+        <div id="article-content">
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{decodeHTMLEntities(article.preview_title)}</IonCardTitle>
@@ -185,6 +187,7 @@ const ArticleDetail: React.FC = () => {
             </IonCardContent>
           </IonCard>
         )}
+        </div>
       </IonContent>
     </IonPage>
   );

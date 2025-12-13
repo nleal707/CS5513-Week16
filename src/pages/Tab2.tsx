@@ -106,8 +106,8 @@ const Tab2: React.FC = () => {
   };
 
   const EmptyState: React.FC = () => (
-    <div className="empty-state">
-      <IonIcon icon={camera} className="empty-state-icon" />
+    <div className="empty-state" role="status" aria-live="polite">
+      <IonIcon icon={camera} className="empty-state-icon" aria-hidden="true" />
       <IonText>
         <h2>No photos yet</h2>
         <p>Tap the camera button to take your first photo!</p>
@@ -130,8 +130,9 @@ const Tab2: React.FC = () => {
         </IonHeader>
 
         {isLoading && (
-          <div className="loading-overlay">
+          <div className="loading-overlay" role="status" aria-live="polite" aria-label="Loading">
             <IonSpinner name="crescent" />
+            <span className="sr-only">Loading photos</span>
           </div>
         )}
 
@@ -145,8 +146,17 @@ const Tab2: React.FC = () => {
                   <div
                     className="photo-thumbnail"
                     onClick={() => handlePhotoClick(photo)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View photo ${photos.indexOf(photo) + 1} of ${photos.length}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handlePhotoClick(photo);
+                      }
+                    }}
                   >
-                    <IonImg src={photo.webviewPath} />
+                    <IonImg src={photo.webviewPath} alt={`Photo ${photos.indexOf(photo) + 1}`} />
                   </div>
                 </IonCol>
               ))}
@@ -156,13 +166,21 @@ const Tab2: React.FC = () => {
 
         {/* Floating action buttons */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton onClick={handleSelectFromGallery} disabled={isLoading}>
-            <IonIcon icon={images}></IonIcon>
+          <IonFabButton 
+            onClick={handleSelectFromGallery} 
+            disabled={isLoading}
+            aria-label="Select photo from gallery"
+          >
+            <IonIcon icon={images} aria-hidden="true"></IonIcon>
           </IonFabButton>
         </IonFab>
         <IonFab vertical="bottom" horizontal="center" slot="fixed">
-          <IonFabButton onClick={handleAddPhoto} disabled={isLoading}>
-            <IonIcon icon={camera}></IonIcon>
+          <IonFabButton 
+            onClick={handleAddPhoto} 
+            disabled={isLoading}
+            aria-label="Take a new photo"
+          >
+            <IonIcon icon={camera} aria-hidden="true"></IonIcon>
           </IonFabButton>
         </IonFab>
 
@@ -181,6 +199,7 @@ const Tab2: React.FC = () => {
           duration={3000}
           color={toastColor}
           position="top"
+          aria-live={toastColor === 'danger' ? 'assertive' : 'polite'}
         />
       </IonContent>
     </IonPage>

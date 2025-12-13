@@ -4,11 +4,14 @@ import {
   IonPage, 
   IonTitle, 
   IonToolbar, 
-  IonList, 
-  IonListHeader, 
-  IonItem, 
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
+  IonImg,
   IonLabel,
-  IonIcon
+  IonIcon,
+  IonText
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -73,38 +76,57 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {/* use map() to loop through JSON array returned from WP REST API */}
-        <IonList id="article-list">
+        <div className="articles-container animate-stagger">
           {dataset.map((item, index) => (
-            <IonItem lines="inset" key={index} button onClick={() => handleArticleClick(item)}>
-              <IonLabel>
-                <h4>{decodeHTMLEntities(item.preview_title)}</h4>
-                <p className="preview-description">
-                  {(() => {
-                    const { processedHTML, isTruncated } = processPreviewDescription(
-                      item.preview_description,
-                      PREVIEW_WORD_LIMIT
-                    );
-                    return (
-                      <>
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: processedHTML
-                          }}
-                        />
-                        {isTruncated && (
-                          <IonIcon 
-                            icon={chevronForwardOutline} 
-                            className="preview-chevron"
+            <IonCard 
+              key={index} 
+              className="article-card"
+              button 
+              onClick={() => handleArticleClick(item)}
+              role="article"
+              aria-label={`Article: ${decodeHTMLEntities(item.preview_title)}`}
+            >
+              {item.featured_image && (
+                <IonImg 
+                  src={item.featured_image} 
+                  alt={decodeHTMLEntities(item.preview_title)}
+                  className="article-card-image"
+                />
+              )}
+              <IonCardHeader>
+                <IonCardTitle>{decodeHTMLEntities(item.preview_title)}</IonCardTitle>
+              </IonCardHeader>
+              <IonCardContent>
+                <IonText>
+                  <p className="preview-description">
+                    {(() => {
+                      const { processedHTML, isTruncated } = processPreviewDescription(
+                        item.preview_description,
+                        PREVIEW_WORD_LIMIT
+                      );
+                      return (
+                        <>
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: processedHTML
+                            }}
                           />
-                        )}
-                      </>
-                    );
-                  })()}
-                </p>
-              </IonLabel>
-            </IonItem>
+                          {isTruncated && (
+                            <IonIcon 
+                              icon={chevronForwardOutline} 
+                              className="preview-chevron"
+                              aria-hidden="true"
+                            />
+                          )}
+                        </>
+                      );
+                    })()}
+                  </p>
+                </IonText>
+              </IonCardContent>
+            </IonCard>
           ))}
-        </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );

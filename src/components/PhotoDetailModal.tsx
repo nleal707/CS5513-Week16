@@ -84,13 +84,13 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
 
   return (
     <>
-      <IonModal isOpen={isOpen} onDidDismiss={onClose}>
-        <IonHeader>
+      <IonModal isOpen={isOpen} onDidDismiss={onClose} aria-labelledby="photo-modal-title">
+        <IonHeader className="photo-modal-header">
           <IonToolbar>
-            <IonTitle>Photo Details</IonTitle>
+            <IonTitle id="photo-modal-title">Photo Details</IonTitle>
             <IonButtons slot="end">
-              <IonButton onClick={onClose}>
-                <IonIcon icon={close} />
+              <IonButton onClick={onClose} className="close-button" aria-label="Close photo details">
+                <IonIcon icon={close} aria-hidden="true" />
               </IonButton>
             </IonButtons>
           </IonToolbar>
@@ -99,10 +99,10 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
           <div className="photo-detail-container">
             <IonImg
               src={photo.webviewPath}
-              alt="Photo detail"
+              alt="Photo detail view"
               className="photo-detail-image"
             />
-            <div className="photo-detail-metadata">
+            <div className="photo-detail-metadata" id="photo-metadata" aria-label="Photo information">
               <IonText>
                 <p className="metadata-item">
                   <strong>Date:</strong> {formatDate(photo.dateTaken)}
@@ -115,21 +115,24 @@ const PhotoDetailModal: React.FC<PhotoDetailModalProps> = ({
             <div className="photo-detail-actions">
               <IonButton
                 expand="block"
-                fill="outline"
+                className="share-button"
                 onClick={handleShare}
                 disabled={isSharing}
+                aria-label="Share photo"
+                aria-describedby="photo-metadata"
               >
-                <IonIcon icon={shareOutline} slot="start" />
+                <IonIcon icon={shareOutline} slot="start" aria-hidden="true" />
                 {isSharing ? 'Sharing...' : 'Share'}
               </IonButton>
               <IonButton
                 expand="block"
-                fill="outline"
-                color="danger"
+                className="delete-button"
                 onClick={() => setShowDeleteAlert(true)}
                 disabled={isDeleting}
+                aria-label="Delete photo"
+                aria-describedby="photo-metadata"
               >
-                <IonIcon icon={trashOutline} slot="start" />
+                <IonIcon icon={trashOutline} slot="start" aria-hidden="true" />
                 Delete
               </IonButton>
             </div>

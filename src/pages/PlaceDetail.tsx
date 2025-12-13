@@ -104,20 +104,22 @@ const PlaceDetail: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonButton onClick={handleBackClick}>
-              <IonIcon slot="icon-only" icon={arrowBack} />
+            <IonButton onClick={handleBackClick} aria-label="Go back to places list">
+              <IonIcon slot="icon-only" icon={arrowBack} aria-hidden="true" />
             </IonButton>
           </IonButtons>
           <IonTitle>Places</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <a href="#place-content" className="skip-link">Skip to place content</a>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{decodeHTMLEntities(place.post_title)}</IonTitle>
           </IonToolbar>
         </IonHeader>
 
+        <div id="place-content">
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>{decodeHTMLEntities(place.featured_image_title)}</IonCardTitle>
@@ -402,6 +404,7 @@ const PlaceDetail: React.FC = () => {
             </IonCardContent>
           </IonCard>
         )}
+        </div>
       </IonContent>
     </IonPage>
   );
