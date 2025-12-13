@@ -45,12 +45,15 @@ import './PlaceDetail.css';
 interface Place {
   ID: number;
   post_title: string;
+  physical_address: string;
   preview_title: string;
   preview_description: string;
   preview_image: string;
+  preview_image_url: string;
   featured_image_title: string;
   featured_image_description: string;
   featured_image: string;
+  featured_image_url: string;
   section_1_title: string;
   section_1_description: string;
   section_1_image: string;
@@ -89,6 +92,7 @@ interface Place {
   secondary_image_title: string;
   secondary_image_description: string;
   secondary_image: string;
+  secondary_image_url: string;
 }
 
 /**
