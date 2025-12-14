@@ -30,7 +30,7 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/nleal707/CS5513-Week16.git](https://github.com/nleal707/CS5513-Week16.git)
+    git clone https://github.com/nleal707/CS5513-Week16.git
     cd CS5513-Week16
     ```
 
